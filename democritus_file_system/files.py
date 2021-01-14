@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import fnmatch
 import os
 import posixpath
@@ -7,12 +5,9 @@ import ntpath
 import shutil
 import sys
 import tempfile
-from typing import Any, Union
+from typing import Any, Dict, Union, List
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '.')))
-import decorators
-from typings import ListOfStrs, DictStrKeyStrOrIntVal
-from utility import atomic_write
+from .atomic_writes import atomic_write
 
 
 def _file_active_action(file_path: str, base_mode: str, file_contents: Any):
@@ -179,7 +174,7 @@ def file_directory(file_path: str) -> str:
     return file_path.replace(file_name(file_path), '')
 
 
-def file_details(file_path: str) -> DictStrKeyStrOrIntVal:
+def file_details(file_path: str) -> Dict[str, Union[str, int]]:
     """Get file hashes and file size for the given file."""
     file_details = {
         'md5': file_md5(file_path),
@@ -217,18 +212,17 @@ def file_contains(file_path: str, pattern: str, *, pattern_is_regex: bool = Fals
     return any(result)
 
 
-def file_search(file_path: str, pattern: str, *, pattern_is_regex: bool = False) -> ListOfStrs:
+def file_search(file_path: str, pattern: str, *, pattern_is_regex: bool = False) -> List[str]:
     """Search for the given pattern in the file."""
-    from regexes import find
+    import re
 
     file_text = file_read(file_path)
     if pattern_is_regex:
-        return find(pattern, file_text)
+        return re.findall(pattern, file_text)
     else:
         return [pattern] * file_text.count(pattern)
 
 
-@decorators.map_first_arg
 def file_name_matches(file_path: str, pattern: str) -> bool:
     """Return whether or not the file name contains the given pattern."""
     name = file_name(file_path)

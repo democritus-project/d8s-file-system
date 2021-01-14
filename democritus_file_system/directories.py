@@ -1,3 +1,4 @@
+import os
 import shutil
 import tempfile
 from typing import Any, Dict, Iterable, Tuple, Union, List, Dict
@@ -51,8 +52,6 @@ def directory_delete(directory_path: str):
 
 def directory_create(directory_path: str, mode=0o777):
     """Create a directory."""
-    import os
-
     if not directory_exists(directory_path):
         os.makedirs(directory_path, mode=mode)
     else:
@@ -96,7 +95,7 @@ def directory_move(src_path: str, dst_path: str):
 
 def directory_files_details(directory_path: str, *, recursive: bool = True) -> Dict[str, Dict[str, Union[str, int]]]:
     """Return the file details for each file in the directory at the given path."""
-    from files import file_details, file_name
+    from .files import file_details, file_name
 
     file_paths = directory_file_paths(directory_path, recursive=recursive)
     file_details_dict = {path: file_details(path) for path in file_paths}
@@ -105,7 +104,7 @@ def directory_files_details(directory_path: str, *, recursive: bool = True) -> D
 
 def directory_files_read(directory_path: str, *, recursive: bool = True) -> Iterable[Tuple[str, str]]:
     """Read all files in the directory_path."""
-    from files import file_read, file_name
+    from .files import file_read, file_name
 
     file_paths = directory_file_paths(directory_path, recursive=recursive)
     for path in file_paths:
@@ -133,7 +132,7 @@ def directory_files_containing(
     directory_path: str, pattern: str, *, pattern_is_regex: bool = False, recursive: bool = True
 ) -> Dict[str, List[str]]:
     """Search for the given pattern in all files in the given directory_path."""
-    from files import file_name, file_search
+    from .files import file_name, file_search
 
     matching_files = {}
     file_paths = directory_file_paths(directory_path, recursive=recursive)
@@ -147,7 +146,7 @@ def directory_files_containing(
 
 def directory_file_paths_matching(directory_path: str, pattern: str, *, recursive: bool = True) -> List[str]:
     """Return the paths of all of the files in the given directory which match the pattern."""
-    from files import file_name_matches, file_name
+    from .files import file_name_matches, file_name
 
     # TODO: consider consolidating this function into the directory_file_names_matching function and providing a flag to specify whether or not the user wants a file name or file path
 
@@ -161,7 +160,7 @@ def directory_file_paths_matching(directory_path: str, pattern: str, *, recursiv
 
 def directory_file_names_matching(directory_path: str, pattern: str, *, recursive: bool = True) -> List[str]:
     """Return the names of all of the files in the given directory which match the pattern."""
-    from files import file_name_matches, file_name
+    from .files import file_name_matches, file_name
 
     matching_file_names = [
         name
@@ -175,7 +174,7 @@ def directory_read_files_with_path_matching(
     directory_path: str, pattern: str, *, recursive: bool = True
 ) -> Iterable[Tuple[str, str]]:
     """Read all of the files in the given directory whose paths match the given pattern."""
-    from files import file_read
+    from .files import file_read
 
     matching_file_paths = directory_file_paths_matching(directory_path, pattern, recursive=recursive)
 

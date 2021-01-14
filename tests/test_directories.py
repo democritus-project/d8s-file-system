@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from democritus_directories import (
+from democritus_file_system import (
     is_directory,
     directory_exists,
     directory_file_names,
@@ -25,8 +25,7 @@ from democritus_directories import (
     directory_file_names_matching,
     directory_read_files_with_path_matching,
 )
-from files import file_write
-from lists import listify
+from democritus_file_system import file_write
 
 NON_EXISTENT_DIRECTORY_PATH = './foo'
 EXISTING_DIRECTORY_PATH = './test_directories'
@@ -245,12 +244,12 @@ def test_directory_files_details_docs_1():
 
 
 def test_directory_files_read_docs_1():
-    assert listify(directory_files_read(EXISTING_DIRECTORY_PATH)) == [
+    assert tuple(directory_files_read(EXISTING_DIRECTORY_PATH)) == (
         ('./test_directories/a', 'a'),
         ('./test_directories/c', 'c'),
         ('./test_directories/b', 'b'),
-    ]
-    assert listify(directory_files_read(NON_EXISTENT_DIRECTORY_PATH)) == []
+    )
+    assert tuple(directory_files_read(NON_EXISTENT_DIRECTORY_PATH)) == ()
 
 
 def test_directory_subdirectory_names_docs_1():
