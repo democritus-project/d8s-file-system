@@ -1,1 +1,2 @@
 atomicwrites
+democritus-hashes @ git+https://github.com/democritus-project/democritus-hashes.git#egg=democritus-hashes
