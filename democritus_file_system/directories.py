@@ -1,14 +1,6 @@
-# -*- coding: utf-8 -*-
-
-import os
 import shutil
-import sys
 import tempfile
-from typing import Any, Dict, Iterable, Tuple, Union
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '.')))
-from typings import ListOfStrs, DictStrKeyStrVal, DictStrKeyStrOrIntVal, DictStrKeyListOfStrsVal
-from lists import list_flatten
+from typing import Any, Dict, Iterable, Tuple, Union, List, Dict
 
 # TODO: test and standardize what happens if these functions are given a directory which does not exist
 # TODO: may want to convert some of these functions to use this library: https://pypi.org/project/path.py/
@@ -26,7 +18,7 @@ def directory_exists(directory_path: str) -> bool:
     return os.path.isdir(directory_path) or False
 
 
-def directory_file_names(directory_path: str, *, recursive: bool = True) -> ListOfStrs:
+def directory_file_names(directory_path: str, *, recursive: bool = True) -> List[str]:
     """List files at the given directory_path."""
     directory_files = []
     for path, dirs, files in os.walk(directory_path):
@@ -36,7 +28,7 @@ def directory_file_names(directory_path: str, *, recursive: bool = True) -> List
     return directory_files
 
 
-def directory_file_paths(directory_path: str, *, recursive: bool = True) -> ListOfStrs:
+def directory_file_paths(directory_path: str, *, recursive: bool = True) -> List[str]:
     """List the file paths at the given directory_path."""
     file_paths = []
     for path, dirs, files in os.walk(directory_path):
@@ -102,7 +94,7 @@ def directory_move(src_path: str, dst_path: str):
     shutil.move(src_path, dst_path)
 
 
-def directory_files_details(directory_path: str, *, recursive: bool = True) -> Dict[str, DictStrKeyStrOrIntVal]:
+def directory_files_details(directory_path: str, *, recursive: bool = True) -> Dict[str, Dict[str, Union[str, int]]]:
     """Return the file details for each file in the directory at the given path."""
     from files import file_details, file_name
 
@@ -120,7 +112,7 @@ def directory_files_read(directory_path: str, *, recursive: bool = True) -> Iter
         yield path, file_read(path)
 
 
-def directory_subdirectory_names(directory_path: str, *, recursive: bool = True) -> ListOfStrs:
+def directory_subdirectory_names(directory_path: str, *, recursive: bool = True) -> List[str]:
     """List the names of all subdirectories in the given directory."""
     # TODO: I think there is a better way to return this data. Rather than ['foo', 'subfoo'], I'd like to see something like:
     # {
@@ -139,7 +131,7 @@ def directory_subdirectory_names(directory_path: str, *, recursive: bool = True)
 
 def directory_files_containing(
     directory_path: str, pattern: str, *, pattern_is_regex: bool = False, recursive: bool = True
-) -> DictStrKeyListOfStrsVal:
+) -> Dict[str, List[str]]:
     """Search for the given pattern in all files in the given directory_path."""
     from files import file_name, file_search
 
@@ -153,7 +145,7 @@ def directory_files_containing(
     return matching_files
 
 
-def directory_file_paths_matching(directory_path: str, pattern: str, *, recursive: bool = True) -> ListOfStrs:
+def directory_file_paths_matching(directory_path: str, pattern: str, *, recursive: bool = True) -> List[str]:
     """Return the paths of all of the files in the given directory which match the pattern."""
     from files import file_name_matches, file_name
 
@@ -167,7 +159,7 @@ def directory_file_paths_matching(directory_path: str, pattern: str, *, recursiv
     return matching_file_paths
 
 
-def directory_file_names_matching(directory_path: str, pattern: str, *, recursive: bool = True) -> ListOfStrs:
+def directory_file_names_matching(directory_path: str, pattern: str, *, recursive: bool = True) -> List[str]:
     """Return the names of all of the files in the given directory which match the pattern."""
     from files import file_name_matches, file_name
 

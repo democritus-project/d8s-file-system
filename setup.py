@@ -2,7 +2,7 @@
 
 from setuptools import setup, find_packages
 
-from democritus_directories import __version__
+from democritus_file_system import __version__
 
 with open('README.md') as readme_file:
     readme = readme_file.read()
@@ -14,14 +14,14 @@ with open('requirements_dev.txt') as requirements_dev_file:
     test_requirements = requirements_dev_file.read().splitlines()
 
 setup(
-    name='democritus_directories',
+    name='democritus_file_system',
     version=__version__,
-    description="Democritus functions for working with directories.",
+    description="Democritus functions for working with files and directories.",
     long_description=readme,
     long_description_content_type="text/markdown",
     author="Floyd Hightower",
     author_email='floyd.hightower27@gmail.com',
-    url='https://github.com/democritus-project/democritus-directories',
+    url='https://github.com/democritus-project/democritus-file-system',
     use_scm_version=True,
     setup_requires=['setuptools_scm'],
     packages=find_packages(exclude=('tests')),
@@ -29,7 +29,7 @@ setup(
     install_requires=requirements,
     license="MIT license",
     zip_safe=True,
-    keywords="democritus,utility,python,directories,directories-utility,directories,files,file-system",
+    keywords="democritus,utility,python,directories,directories-utility,directories,file-system,files,files-utility",
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
