@@ -1,4 +1,5 @@
 import os
+import tempfile
 
 import pytest
 
@@ -33,6 +34,7 @@ from democritus_file_system import (
     file_contains,
     file_search,
     file_name_matches,
+    temp_file_create,
 )
 from democritus_file_system.files import _file_active_action, _file_action
 
@@ -237,3 +239,9 @@ def test_file_ssdeep_docs_1():
 def test_is_file_docs_1():
     assert is_file(EXISTING_FILE_PATH) == True
     assert is_file(NON_EXISTENT_FILE_PATH) == False
+
+
+def test_temp_file_create_docs_1():
+    temp_file = temp_file_create()
+    assert temp_file
+    temp_file.close()

@@ -180,3 +180,8 @@ def directory_read_files_with_path_matching(
 
     for file_path in matching_file_paths:
         yield file_path, file_read(file_path)
+
+
+def temp_dir_create(**kwargs) -> str:
+    """Create a temporary directory."""
+    return tempfile.TemporaryDirectory(**kwargs)

@@ -1,4 +1,5 @@
 import os
+import tempfile
 
 import pytest
 
@@ -24,6 +25,7 @@ from democritus_file_system import (
     directory_file_paths_matching,
     directory_file_names_matching,
     directory_read_files_with_path_matching,
+    temp_dir_create,
 )
 from democritus_file_system import file_write
 
@@ -265,3 +267,9 @@ def test_directory_subdirectory_names_docs_1():
 def test_is_directory_docs_1():
     assert is_directory(EXISTING_DIRECTORY_PATH) == True
     assert is_directory(NON_EXISTENT_DIRECTORY_PATH) == False
+
+
+def test_temp_dir_create_docs_1():
+    temp_dir = temp_dir_create()
+    assert isinstance(temp_dir, tempfile.TemporaryDirectory)
+    temp_dir.cleanup()

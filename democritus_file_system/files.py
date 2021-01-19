@@ -141,11 +141,11 @@ def file_sha512(file_path: str) -> str:
 
 def file_name_escape(file_name: str) -> str:
     """Escape the name of a file so that it can be used as a file name in a file path."""
-    from urls import url_encode
+    import urllib.parse as urlparse
 
     # TODO: I should probably make an 'unescape' file
 
-    url_encoded_file_name = url_encode(file_name)
+    url_encoded_file_name = urlparse.quote_plus(file_name)
     return url_encoded_file_name
 
 
@@ -227,3 +227,8 @@ def file_name_matches(file_path: str, pattern: str) -> bool:
     """Return whether or not the file name contains the given pattern."""
     name = file_name(file_path)
     return fnmatch.fnmatch(file_path, pattern)
+
+
+def temp_file_create(**kwargs) -> str:
+    """Create a temporary file."""
+    return tempfile.TemporaryFile(**kwargs)
