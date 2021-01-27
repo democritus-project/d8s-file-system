@@ -162,13 +162,16 @@ def test_file_name_escape_docs_1():
 
 
 def test_file_name_matches_docs_1():
-    assert file_name_matches('a', 'a') == True
-    assert file_name_matches('a', '?') == True
-    assert file_name_matches('a', 'a*') == True
-    assert file_name_matches('a', 'a?') == False
-    assert file_name_matches('a', 'b') == False
-    assert file_name_matches('a', '[abc]') == True
-    assert file_name_matches('a', '[bc]') == False
+    assert file_name_matches('a', 'a')
+    assert file_name_matches('a', '?')
+    assert file_name_matches('a', 'a*')
+    assert not file_name_matches('a', 'a?')
+    assert not file_name_matches('a', 'b')
+    assert file_name_matches('a', '[abc]')
+    assert not file_name_matches('a', '[bc]')
+
+    path = '/Users/me/code/democritus/foo/democritus_sample_docs.json'
+    assert file_name_matches(path, 'democritus_*_docs.json')
 
 
 def test_file_name_unix_docs_1():

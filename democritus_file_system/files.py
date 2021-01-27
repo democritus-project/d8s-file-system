@@ -226,7 +226,7 @@ def file_search(file_path: str, pattern: str, *, pattern_is_regex: bool = False)
 def file_name_matches(file_path: str, pattern: str) -> bool:
     """Return whether or not the file name contains the given pattern."""
     name = file_name(file_path)
-    return fnmatch.fnmatch(file_path, pattern)
+    return fnmatch.fnmatch(name, pattern)
 
 
 def temp_file_create(**kwargs) -> str:

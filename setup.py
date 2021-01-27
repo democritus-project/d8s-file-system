@@ -41,5 +41,5 @@ setup(
         'Programming Language :: Python :: 3.9',
     ],
     test_suite='tests',
-    tests_require=test_requirements
+    tests_require=test_requirements,
 )
