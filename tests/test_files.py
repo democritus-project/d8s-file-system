@@ -3,8 +3,8 @@ import tempfile
 
 import pytest
 
-from democritus_file_system import directory_create, directory_delete, directory_file_names
-from democritus_file_system import (
+from d8s_file_system import directory_create, directory_delete, directory_file_names
+from d8s_file_system import (
     is_file,
     file_read,
     file_read_bytes,
@@ -36,7 +36,7 @@ from democritus_file_system import (
     file_name_matches,
     temp_file_create,
 )
-from democritus_file_system.files import _file_active_action, _file_action
+from d8s_file_system.files import _file_active_action, _file_action
 
 NON_EXISTENT_FILE_PATH = './foo'
 TEST_DIRECTORY_PATH = './test_files'

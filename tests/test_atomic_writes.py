@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from democritus_file_system import atomic_write, directory_create, file_read, directory_delete
+from d8s_file_system import atomic_write, directory_create, file_read, directory_delete
 
 TEST_DIRECTORY_PATH = './test_files'
 NON_EXISTENT_FILE_PATH = './foo'

@@ -3,7 +3,7 @@ import tempfile
 
 import pytest
 
-from democritus_file_system import (
+from d8s_file_system import (
     is_directory,
     directory_exists,
     directory_file_names,
@@ -27,7 +27,7 @@ from democritus_file_system import (
     directory_read_files_with_path_matching,
     temp_dir_create,
 )
-from democritus_file_system import file_write
+from d8s_file_system import file_write
 
 NON_EXISTENT_DIRECTORY_PATH = './foo'
 EXISTING_DIRECTORY_PATH = './test_directories'
