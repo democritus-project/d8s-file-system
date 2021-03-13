@@ -3,7 +3,7 @@ from typing import Any
 
 import pytest
 
-from democritus_file_system import file_read, file_write
+from d8s_file_system import file_read, file_write
 from democritus_strings import string_remove_from_start, string_remove_after
 
 FILL_OUTPUT_SIGNAL = 'fill'
