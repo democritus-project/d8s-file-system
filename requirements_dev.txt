@@ -8,5 +8,5 @@ mypy
 pylint
 pytest
 pytest-cov
-democritus_file_system
+d8s_file_system
 democritus_strings
