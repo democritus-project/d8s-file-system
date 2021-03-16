@@ -106,35 +106,35 @@ def file_change_owner(file_path: str):
 
 def file_ssdeep(file_path: str) -> str:
     """Find the ssdeep fuzzy hash of the file."""
-    from democritus_hashes import ssdeep
+    from d8s_hashes import ssdeep
 
     return ssdeep(file_read_bytes(file_path))
 
 
 def file_md5(file_path: str) -> str:
     """Find the md5 hash of the given file."""
-    from democritus_hashes import md5
+    from d8s_hashes import md5
 
     return md5(file_read_bytes(file_path))
 
 
 def file_sha1(file_path: str) -> str:
     """Find the sha1 hash of the given file."""
-    from democritus_hashes import sha1
+    from d8s_hashes import sha1
 
     return sha1(file_read_bytes(file_path))
 
 
 def file_sha256(file_path: str) -> str:
     """Find the sha256 hash of the given file."""
-    from democritus_hashes import sha256
+    from d8s_hashes import sha256
 
     return sha256(file_read_bytes(file_path))
 
 
 def file_sha512(file_path: str) -> str:
     """Find the sha512 hash of the given file."""
-    from democritus_hashes import sha512
+    from d8s_hashes import sha512
 
     return sha512(file_read_bytes(file_path))
 
