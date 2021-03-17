@@ -9,4 +9,5 @@ pylint
 pytest
 pytest-cov
 d8s_file_system
-democritus_strings
+d8s-strings
+bump2version
