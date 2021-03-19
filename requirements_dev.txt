@@ -9,5 +9,5 @@ pylint
 pytest
 pytest-cov
 d8s_file_system
-d8s-strings
+d8s-strings==0.3.0
 bump2version
