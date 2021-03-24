@@ -166,6 +166,6 @@ def directory_read_files_with_path_matching(
         yield file_path, file_read(file_path)
 
 
-def temp_dir_create(**kwargs) -> tempfile.TemporaryDirectory[str]:
+def temp_dir_create(**kwargs):
     """Create a temporary directory."""
     return tempfile.TemporaryDirectory(**kwargs)
