@@ -1,7 +1,8 @@
 import contextlib
 import os
 
-from atomicwrites import atomic_write as atomic_write_, AtomicWriter
+from atomicwrites import AtomicWriter
+from atomicwrites import atomic_write as atomic_write_
 
 
 class AtomicWriterPerms(AtomicWriter):

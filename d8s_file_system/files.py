@@ -1,11 +1,11 @@
 import fnmatch
+import ntpath
 import os
 import posixpath
-import ntpath
 import shutil
 import sys
 import tempfile
-from typing import Any, Dict, Union, List
+from typing import Any, Dict, List, Union
 
 from .atomic_writes import atomic_write
 
