@@ -3,40 +3,42 @@ import tempfile
 
 import pytest
 
-from d8s_file_system import directory_create, directory_delete, directory_file_names
 from d8s_file_system import (
-    is_file,
-    file_read,
-    file_read_bytes,
-    file_write,
+    directory_create,
+    directory_delete,
+    directory_file_names,
     file_append,
-    file_move,
+    file_change_owner,
+    file_contains,
     file_copy,
     file_delete,
-    file_owner_name,
-    file_change_owner,
-    file_ssdeep,
+    file_details,
+    file_directory,
+    file_exists,
+    file_is_executable,
+    file_is_readable,
+    file_is_writable,
     file_md5,
+    file_move,
+    file_name,
+    file_name_escape,
+    file_name_matches,
+    file_name_unix,
+    file_name_windows,
+    file_owner_name,
+    file_read,
+    file_read_bytes,
+    file_search,
     file_sha1,
     file_sha256,
     file_sha512,
-    file_name_escape,
-    file_name,
-    file_name_windows,
-    file_name_unix,
     file_size,
-    file_directory,
-    file_details,
-    file_exists,
-    file_is_readable,
-    file_is_writable,
-    file_is_executable,
-    file_contains,
-    file_search,
-    file_name_matches,
+    file_ssdeep,
+    file_write,
+    is_file,
     temp_file_create,
 )
-from d8s_file_system.files import _file_active_action, _file_action
+from d8s_file_system.files import _file_action, _file_active_action
 
 NON_EXISTENT_FILE_PATH = './foo'
 TEST_DIRECTORY_PATH = './test_files'
@@ -132,7 +134,7 @@ def test_file_exists_docs_1():
 
 
 def test_file_is_executable_docs_1():
-    assert file_is_executable(EXISTING_FILE_PATH) == False
+    assert file_is_executable(EXISTING_FILE_PATH) == True
     assert file_is_executable(NON_EXISTENT_FILE_PATH) == False
 
 

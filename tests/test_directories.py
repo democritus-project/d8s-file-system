@@ -2,32 +2,33 @@ import os
 import tempfile
 
 import pytest
+from d8s_lists import iterables_have_same_items
 
 from d8s_file_system import (
-    is_directory,
+    directory_copy,
+    directory_create,
+    directory_delete,
+    directory_disk_free_space,
+    directory_disk_total_space,
+    directory_disk_usage,
+    directory_disk_used_space,
     directory_exists,
     directory_file_names,
+    directory_file_names_matching,
     directory_file_paths,
-    directory_copy,
-    directory_delete,
-    directory_create,
-    directory_disk_usage,
-    directory_disk_free_space,
-    directory_disk_used_space,
-    directory_disk_total_space,
-    home_directory,
-    home_directory_join,
-    directory_move,
+    directory_file_paths_matching,
+    directory_files_containing,
     directory_files_details,
     directory_files_read,
-    directory_subdirectory_names,
-    directory_files_containing,
-    directory_file_paths_matching,
-    directory_file_names_matching,
+    directory_move,
     directory_read_files_with_path_matching,
+    directory_subdirectory_names,
+    file_write,
+    home_directory,
+    home_directory_join,
+    is_directory,
     temp_dir_create,
 )
-from d8s_file_system import file_write
 
 NON_EXISTENT_DIRECTORY_PATH = './foo'
 EXISTING_DIRECTORY_PATH = './test_directories'
@@ -58,41 +59,44 @@ def teardown_module():
 
 def test_directory_create_docs_1():
     directory_create(os.path.join(EXISTING_DIRECTORY_PATH, 'foo'))
-    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH, recursive=False) == ['foo']
+    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH) == ['foo']
+    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH, recursive=True) == ['foo']
 
     # creating the same directory again works (it does not raise an error)
     directory_create(os.path.join(EXISTING_DIRECTORY_PATH, 'foo'))
-    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH, recursive=False) == ['foo']
+    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH) == ['foo']
 
     # creating multiple layers of directories works too
     directory_create(os.path.join(EXISTING_DIRECTORY_PATH, 'foo', 'subfoo'))
-    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH, recursive=False) == ['foo']
-    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH) == ['foo', 'subfoo']
+    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH) == ['foo']
+    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH, recursive=True) == ['foo', 'subfoo']
 
 
 def test_directory_copy_docs_1():
-    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH, recursive=False) == []
+    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH) == []
     new_directory_path = os.path.join(EXISTING_DIRECTORY_PATH, 'foo')
     directory_create(new_directory_path)
-    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH, recursive=False) == ['foo']
+    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH) == ['foo']
     file_write(os.path.join(new_directory_path, 'a'), 'a')
-
     copy_directory_path = os.path.join(EXISTING_DIRECTORY_PATH, 'bar')
+
     directory_copy(new_directory_path, copy_directory_path)
-    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH, recursive=False) == ['foo', 'bar']
+    results = directory_subdirectory_names(EXISTING_DIRECTORY_PATH)
+
+    assert iterables_have_same_items(results, ['bar', 'foo'])
     assert directory_file_names(new_directory_path) == ['a']
     assert directory_file_names(copy_directory_path) == ['a']
 
+
+def test_directory_copy_docs__nonexistent_directory_path():
     # copying into a directory which already exists raises an error
-    with pytest.raises(FileExistsError):
-        directory_copy(new_directory_path, copy_directory_path)
+    with pytest.raises(FileNotFoundError):
+        directory_copy('foo', 'bar')
 
 
-def test_directory_copy_docs_recursive_copy():
-    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH, recursive=False) == []
+def test_directory_copy_docs__recursive_copy():
     new_directory_path = os.path.join(EXISTING_DIRECTORY_PATH, 'foo', 'subfoo')
     directory_create(new_directory_path)
-    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH) == ['foo', 'subfoo']
     file_write(os.path.join(new_directory_path, 'a'), 'a')
 
     # copying a directory copies everything inside that directory
@@ -100,7 +104,9 @@ def test_directory_copy_docs_recursive_copy():
     dst_path = os.path.join(EXISTING_DIRECTORY_PATH, 'bar')
     deep_dst_path = os.path.join(dst_path, 'subfoo')
     directory_copy(src_path, dst_path)
-    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH) == ['foo', 'bar', 'subfoo', 'subfoo']
+    assert iterables_have_same_items(
+        directory_subdirectory_names(EXISTING_DIRECTORY_PATH, recursive=True), ['foo', 'bar', 'subfoo', 'subfoo']
+    )
     assert directory_file_names(deep_dst_path) == ['a']
 
 
@@ -113,12 +119,12 @@ def test_directory_move_docs_1():
 
 
 def test_directory_delete_docs_1():
-    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH, recursive=False) == []
+    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH) == []
     new_directory_path = os.path.join(EXISTING_DIRECTORY_PATH, 'foo')
     directory_create(new_directory_path)
-    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH, recursive=False) == ['foo']
+    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH) == ['foo']
     directory_delete(new_directory_path)
-    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH, recursive=False) == []
+    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH) == []
 
     with pytest.raises(FileNotFoundError):
         directory_delete(NON_EXISTENT_DIRECTORY_PATH)
@@ -126,11 +132,10 @@ def test_directory_delete_docs_1():
 
 def test_home_directory_docs_1():
     result = home_directory()
-    assert result.startswith('/Users/')
+    assert result == '/root'
 
     result = home_directory_join(EXISTING_DIRECTORY_PATH)
-    assert result.startswith('/Users/')
-    assert result.endswith('test_directories')
+    assert result == '/root/./test_directories'
 
 
 def test_directory_files_containing_docs_1():
@@ -158,7 +163,9 @@ def test_directory_read_files_with_path_matching_docs_1():
     assert list(result) == []
 
     result = directory_read_files_with_path_matching(EXISTING_DIRECTORY_PATH, '*[abc]')
-    assert list(result) == [('./test_directories/a', 'a'), ('./test_directories/c', 'c'), ('./test_directories/b', 'b')]
+    assert iterables_have_same_items(
+        tuple(result), (('./test_directories/a', 'a'), ('./test_directories/c', 'c'), ('./test_directories/b', 'b'))
+    )
 
     result = directory_read_files_with_path_matching(NON_EXISTENT_DIRECTORY_PATH, 'a')
     assert list(result) == []
@@ -188,7 +195,7 @@ def test_directory_exists_docs_1():
 
 
 def test_directory_file_names_docs_1():
-    assert directory_file_names(EXISTING_DIRECTORY_PATH) == ['a', 'c', 'b']
+    assert iterables_have_same_items(directory_file_names(EXISTING_DIRECTORY_PATH), ['a', 'c', 'b'])
     assert directory_file_names(NON_EXISTENT_DIRECTORY_PATH) == []
 
 
@@ -205,16 +212,22 @@ def test_directory_file_names_matching_docs_1():
 
 
 def test_directory_file_paths_docs_1():
-    assert directory_file_paths(EXISTING_DIRECTORY_PATH) == [
-        './test_directories/a',
-        './test_directories/c',
-        './test_directories/b',
-    ]
-    assert directory_file_paths(EXISTING_DIRECTORY_PATH, recursive=False) == [
-        './test_directories/a',
-        './test_directories/c',
-        './test_directories/b',
-    ]
+    assert iterables_have_same_items(
+        directory_file_paths(EXISTING_DIRECTORY_PATH),
+        [
+            './test_directories/a',
+            './test_directories/c',
+            './test_directories/b',
+        ],
+    )
+    assert iterables_have_same_items(
+        directory_file_paths(EXISTING_DIRECTORY_PATH),
+        [
+            './test_directories/a',
+            './test_directories/c',
+            './test_directories/b',
+        ],
+    )
     assert directory_file_paths(NON_EXISTENT_DIRECTORY_PATH) == []
 
 
@@ -246,21 +259,23 @@ def test_directory_files_details_docs_1():
 
 
 def test_directory_files_read_docs_1():
-    assert tuple(directory_files_read(EXISTING_DIRECTORY_PATH)) == (
-        ('./test_directories/a', 'a'),
-        ('./test_directories/c', 'c'),
-        ('./test_directories/b', 'b'),
+    assert iterables_have_same_items(
+        tuple(directory_files_read(EXISTING_DIRECTORY_PATH)),
+        (
+            ('./test_directories/a', 'a'),
+            ('./test_directories/c', 'c'),
+            ('./test_directories/b', 'b'),
+        ),
     )
     assert tuple(directory_files_read(NON_EXISTENT_DIRECTORY_PATH)) == ()
 
 
 def test_directory_subdirectory_names_docs_1():
-    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH) == []
-
     new_directory_path = os.path.join(EXISTING_DIRECTORY_PATH, 'foo', 'subfoo')
     directory_create(new_directory_path)
-    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH) == ['foo', 'subfoo']
-    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH, recursive=False) == ['foo']
+
+    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH) == ['foo']
+    assert directory_subdirectory_names(EXISTING_DIRECTORY_PATH, recursive=True) == ['foo', 'subfoo']
     assert directory_subdirectory_names(NON_EXISTENT_DIRECTORY_PATH) == []
 
 
