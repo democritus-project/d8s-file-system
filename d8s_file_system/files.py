@@ -3,9 +3,8 @@ import ntpath
 import os
 import posixpath
 import shutil
-import sys
 import tempfile
-from typing import Any, Dict, List, Union
+from typing import IO, Any, Dict, List, Union
 
 from .atomic_writes import atomic_write
 
@@ -31,14 +30,14 @@ def _file_active_action(file_path: str, base_mode: str, file_contents: Any):
 
 def _file_action(file_path, mode='r', command='read', contents=None):
     if 'w' in mode:
-        with atomic_write(file_path, mode=mode) as f:
-            return eval(f'f.{command}(contents)')
+        with atomic_write(file_path, mode=mode) as f:  # pylint: disable=W0612  # noqa: F841
+            return eval(f'f.{command}(contents)')  # pylint: disable=W0123  # nosec
     else:
-        with open(file_path, mode) as f:
+        with open(file_path, mode) as f:  # noqa: F841
             if contents:
-                return eval(f'f.{command}(contents)')
+                return eval(f'f.{command}(contents)')  # pylint: disable=W0123  # nosec
             else:
-                return eval(f'f.{command}()')
+                return eval(f'f.{command}()')  # pylint: disable=W0123  # nosec
 
 
 def is_file(path: str) -> bool:
@@ -47,11 +46,13 @@ def is_file(path: str) -> bool:
 
 
 def file_read(file_path: str) -> str:
+    """Read the file at the given file_path as a string."""
     file_text = _file_action(file_path, 'r', 'read')
     return file_text
 
 
 def file_read_bytes(file_path: str) -> bytes:
+    """Read the file at the given file_path as bytes."""
     file_text = _file_action(file_path, 'rb', 'read')
     return file_text
 
@@ -70,7 +71,6 @@ def file_append(file_path: str, file_contents: Any) -> bool:
 
 def file_move(starting_path: str, destination_path: str):
     """Move the file from the starting path to the destination path."""
-    # TODO: this function could also be called "file_rename" - add a tag so that this function shows up if someone searches for "rename"
     shutil.move(starting_path, destination_path)
 
 
@@ -89,7 +89,6 @@ def file_delete(file_path: str):
 
 def file_owner_name(file_path: str) -> str:
     """Find the owner of the file at the given path."""
-    # TODO: I believe this function only works for unix systems; update it (or write a corresponding function) to work on windows too
     from pwd import getpwuid
 
     file_owner_uid = os.stat(file_path).st_uid
@@ -106,46 +105,46 @@ def file_change_owner(file_path: str):
 
 def file_ssdeep(file_path: str) -> str:
     """Find the ssdeep fuzzy hash of the file."""
-    from d8s_hashes import ssdeep
+    from d8s_hashes import ssdeep  # pylint: disable=C0415
 
     return ssdeep(file_read_bytes(file_path))
 
 
 def file_md5(file_path: str) -> str:
     """Find the md5 hash of the given file."""
-    from d8s_hashes import md5
+    from d8s_hashes import md5  # pylint: disable=C0415
 
     return md5(file_read_bytes(file_path))
 
 
 def file_sha1(file_path: str) -> str:
     """Find the sha1 hash of the given file."""
-    from d8s_hashes import sha1
+    from d8s_hashes import sha1  # pylint: disable=C0415
 
     return sha1(file_read_bytes(file_path))
 
 
 def file_sha256(file_path: str) -> str:
     """Find the sha256 hash of the given file."""
-    from d8s_hashes import sha256
+    from d8s_hashes import sha256  # pylint: disable=C0415
 
     return sha256(file_read_bytes(file_path))
 
 
 def file_sha512(file_path: str) -> str:
     """Find the sha512 hash of the given file."""
-    from d8s_hashes import sha512
+    from d8s_hashes import sha512  # pylint: disable=C0415
 
     return sha512(file_read_bytes(file_path))
 
 
-def file_name_escape(file_name: str) -> str:
+def file_name_escape(file_name_arg: str) -> str:
     """Escape the name of a file so that it can be used as a file name in a file path."""
     import urllib.parse as urlparse
 
     # TODO: I should probably make an 'unescape' file
 
-    url_encoded_file_name = urlparse.quote_plus(file_name)
+    url_encoded_file_name = urlparse.quote_plus(file_name_arg)
     return url_encoded_file_name
 
 
@@ -176,14 +175,15 @@ def file_directory(file_path: str) -> str:
 
 def file_details(file_path: str) -> Dict[str, Union[str, int]]:
     """Get file hashes and file size for the given file."""
-    file_details = {
+    details = {
         'md5': file_md5(file_path),
         'sha1': file_sha1(file_path),
         'sha256': file_sha256(file_path),
         'ssdeep': file_ssdeep(file_path),
         'size': file_size(file_path),
     }
-    return file_details
+    # (not sure why mypy fails here...)
+    return details  # type: ignore
 
 
 def file_exists(file_path: str) -> bool:
@@ -229,6 +229,6 @@ def file_name_matches(file_path: str, pattern: str) -> bool:
     return fnmatch.fnmatch(name, pattern)
 
 
-def temp_file_create(**kwargs) -> str:
+def temp_file_create(**kwargs) -> IO[Any]:
     """Create a temporary file."""
     return tempfile.TemporaryFile(**kwargs)

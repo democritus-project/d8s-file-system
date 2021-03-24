@@ -10,7 +10,6 @@ from d8s_file_system import (
     directory_delete,
     directory_disk_free_space,
     directory_disk_total_space,
-    directory_disk_usage,
     directory_disk_used_space,
     directory_exists,
     directory_file_names,
@@ -190,8 +189,8 @@ def test_directory_disk_used_space_docs_1():
 
 
 def test_directory_exists_docs_1():
-    assert directory_exists(EXISTING_DIRECTORY_PATH) == True
-    assert directory_exists(NON_EXISTENT_DIRECTORY_PATH) == False
+    assert directory_exists(EXISTING_DIRECTORY_PATH)
+    assert not directory_exists(NON_EXISTENT_DIRECTORY_PATH)
 
 
 def test_directory_file_names_docs_1():
@@ -280,8 +279,8 @@ def test_directory_subdirectory_names_docs_1():
 
 
 def test_is_directory_docs_1():
-    assert is_directory(EXISTING_DIRECTORY_PATH) == True
-    assert is_directory(NON_EXISTENT_DIRECTORY_PATH) == False
+    assert is_directory(EXISTING_DIRECTORY_PATH)
+    assert not is_directory(NON_EXISTENT_DIRECTORY_PATH)
 
 
 def test_temp_dir_create_docs_1():

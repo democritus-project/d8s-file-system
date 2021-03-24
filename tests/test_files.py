@@ -1,5 +1,4 @@
 import os
-import tempfile
 
 import pytest
 
@@ -8,12 +7,10 @@ from d8s_file_system import (
     directory_delete,
     directory_file_names,
     file_append,
-    file_change_owner,
     file_contains,
     file_copy,
     file_delete,
     file_details,
-    file_directory,
     file_exists,
     file_is_executable,
     file_is_readable,
@@ -38,7 +35,6 @@ from d8s_file_system import (
     is_file,
     temp_file_create,
 )
-from d8s_file_system.files import _file_action, _file_active_action
 
 NON_EXISTENT_FILE_PATH = './foo'
 TEST_DIRECTORY_PATH = './test_files'
@@ -74,7 +70,7 @@ def test_file_append_1():
 
 
 def test_file_copy_1():
-    result = file_copy(EXISTING_FILE_PATH, os.path.join(TEST_DIRECTORY_PATH, 'b'))
+    file_copy(EXISTING_FILE_PATH, os.path.join(TEST_DIRECTORY_PATH, 'b'))
     assert directory_file_names(TEST_DIRECTORY_PATH) == ['a', 'b']
 
     # TODO: test the preserve_metadata kwarg (this requires a function to get file metadata)
@@ -82,7 +78,7 @@ def test_file_copy_1():
 
 def test_file_delete_1():
     assert directory_file_names(TEST_DIRECTORY_PATH) == ['a']
-    result = file_delete(EXISTING_FILE_PATH)
+    file_delete(EXISTING_FILE_PATH)
     assert directory_file_names(TEST_DIRECTORY_PATH) == []
 
 
@@ -110,9 +106,9 @@ def test_file_move_1():
 
 
 def test_file_contains_docs_1():
-    assert file_contains(EXISTING_FILE_PATH, 'a') == True
-    assert file_contains(EXISTING_FILE_PATH, 'b') == False
-    assert file_contains(EXISTING_FILE_PATH, '[abc]', pattern_is_regex=True) == True
+    assert file_contains(EXISTING_FILE_PATH, 'a')
+    assert not file_contains(EXISTING_FILE_PATH, 'b')
+    assert file_contains(EXISTING_FILE_PATH, '[abc]', pattern_is_regex=True)
     # assert file_contains(NON_EXISTENT_FILE_PATH, 'a') == 'fill'  # [Errno 2] No such file or directory
 
 
@@ -124,28 +120,31 @@ def test_file_details_docs_1():
         'size': 1,
         'ssdeep': '3:E:E',
     }
+
+
+def test_file_details_docs__nonexistent_file():
     with pytest.raises(FileNotFoundError):
         file_details(NON_EXISTENT_FILE_PATH)
 
 
 def test_file_exists_docs_1():
-    assert file_exists(EXISTING_FILE_PATH) == True
-    assert file_exists(NON_EXISTENT_FILE_PATH) == False
+    assert file_exists(EXISTING_FILE_PATH)
+    assert not file_exists(NON_EXISTENT_FILE_PATH)
 
 
 def test_file_is_executable_docs_1():
-    assert file_is_executable(EXISTING_FILE_PATH) == True
-    assert file_is_executable(NON_EXISTENT_FILE_PATH) == False
+    assert file_is_executable(EXISTING_FILE_PATH)
+    assert not file_is_executable(NON_EXISTENT_FILE_PATH)
 
 
 def test_file_is_readable_docs_1():
-    assert file_is_readable(EXISTING_FILE_PATH) == True
-    assert file_is_readable(NON_EXISTENT_FILE_PATH) == False
+    assert file_is_readable(EXISTING_FILE_PATH)
+    assert not file_is_readable(NON_EXISTENT_FILE_PATH)
 
 
 def test_file_is_writable_docs_1():
-    assert file_is_writable(EXISTING_FILE_PATH) == True
-    assert file_is_writable(NON_EXISTENT_FILE_PATH) == False
+    assert file_is_writable(EXISTING_FILE_PATH)
+    assert not file_is_writable(NON_EXISTENT_FILE_PATH)
 
 
 def test_file_md5_docs_1():
@@ -242,8 +241,8 @@ def test_file_ssdeep_docs_1():
 
 
 def test_is_file_docs_1():
-    assert is_file(EXISTING_FILE_PATH) == True
-    assert is_file(NON_EXISTENT_FILE_PATH) == False
+    assert is_file(EXISTING_FILE_PATH)
+    assert not is_file(NON_EXISTENT_FILE_PATH)
 
 
 def test_temp_file_create_docs_1():

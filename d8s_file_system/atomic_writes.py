@@ -6,9 +6,11 @@ from atomicwrites import atomic_write as atomic_write_
 
 
 class AtomicWriterPerms(AtomicWriter):
-    """This class wraps the AtomicWriter from the atomicwrites package to update the file permissions after the file is created.
+    """This class wraps the AtomicWriter from the atomicwrites package.
 
-    This snippet was taken from/inspired by the code here: https://github.com/OCR-D/core/pull/625."""
+    This class updates the file permissions after the file is created.
+    This snippet was taken from/inspired by the code here: https://github.com/OCR-D/core/pull/625.
+    """
 
     def get_fileobject(self, **kwargs):
         f = super().get_fileobject(**kwargs)
@@ -26,5 +28,6 @@ class AtomicWriterPerms(AtomicWriter):
 
 @contextlib.contextmanager
 def atomic_write(fpath, *, overwrite: bool = True, **cls_kwargs):
+    """Create a context manager to write atomically using the AtomicWriterPerms class to update file permissions."""
     with atomic_write_(fpath, writer_cls=AtomicWriterPerms, overwrite=overwrite, **cls_kwargs) as f:
         yield f
