@@ -131,10 +131,11 @@ def test_directory_delete_docs_1():
 
 def test_home_directory_docs_1():
     result = home_directory()
-    assert result == '/root'
+    # '/root' is the home directory when running in docker; '/home/runner' is the home directory in Github actions
+    assert result == '/root' or result == '/home/runner'
 
     result = home_directory_join(EXISTING_DIRECTORY_PATH)
-    assert result == '/root/./test_directories'
+    assert result == '/root/./test_directories' or result == '/home/runner/./test_directories'
 
 
 def test_directory_files_containing_docs_1():

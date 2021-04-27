@@ -1,6 +1,9 @@
 import os
+import stat
+from pathlib import Path
 
 import pytest
+from d8s_lists import iterables_have_same_items
 
 from d8s_file_system import (
     directory_create,
@@ -71,7 +74,7 @@ def test_file_append_1():
 
 def test_file_copy_1():
     file_copy(EXISTING_FILE_PATH, os.path.join(TEST_DIRECTORY_PATH, 'b'))
-    assert directory_file_names(TEST_DIRECTORY_PATH) == ['a', 'b']
+    assert iterables_have_same_items(directory_file_names(TEST_DIRECTORY_PATH), ['a', 'b'])
 
     # TODO: test the preserve_metadata kwarg (this requires a function to get file metadata)
 
@@ -133,6 +136,10 @@ def test_file_exists_docs_1():
 
 
 def test_file_is_executable_docs_1():
+    f = Path(EXISTING_FILE_PATH)
+    # make the file executable
+    f.chmod(f.stat().st_mode | stat.S_IEXEC)
+
     assert file_is_executable(EXISTING_FILE_PATH)
     assert not file_is_executable(NON_EXISTENT_FILE_PATH)
 
