@@ -130,12 +130,18 @@ def test_directory_delete_docs_1():
 
 
 def test_home_directory_docs_1():
+    # '/root' is the home directory when running in linux, '/home/runner' is the home directory in mac (at least in github actions), and '/Users/runner' is the home directory on windows (in github actions)
+    HOME_DIRECTORIES = ('/root', '/home/runner', '/Users/runner')
     result = home_directory()
-    # '/root' is the home directory when running in docker; '/home/runner' is the home directory in Github actions
-    assert result == '/root' or result == '/home/runner'
+    assert result in HOME_DIRECTORIES
 
+    JOINED_HOME_DIRECTORIES = (
+        '/root/./test_directories',
+        '/home/runner/./test_directories',
+        '/Users/runner/./test_directories',
+    )
     result = home_directory_join(EXISTING_DIRECTORY_PATH)
-    assert result == '/root/./test_directories' or result == '/home/runner/./test_directories'
+    assert result in JOINED_HOME_DIRECTORIES
 
 
 def test_directory_files_containing_docs_1():
