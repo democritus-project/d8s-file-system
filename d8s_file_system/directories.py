@@ -1,6 +1,5 @@
 import os
 import shutil
-import tempfile
 from typing import Dict, Iterable, List, Tuple, Union
 
 from .files import file_details, file_name_matches, file_read, file_search
@@ -164,8 +163,3 @@ def directory_read_files_with_path_matching(
 
     for file_path in matching_file_paths:
         yield file_path, file_read(file_path)
-
-
-def temp_dir_create(**kwargs):
-    """Create a temporary directory."""
-    return tempfile.TemporaryDirectory(**kwargs)

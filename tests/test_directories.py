@@ -1,5 +1,4 @@
 import os
-import tempfile
 
 import pytest
 from d8s_lists import iterables_have_same_items
@@ -26,7 +25,6 @@ from d8s_file_system import (
     home_directory,
     home_directory_join,
     is_directory,
-    temp_dir_create,
 )
 
 NON_EXISTENT_DIRECTORY_PATH = './foo'
@@ -288,9 +286,3 @@ def test_directory_subdirectory_names_docs_1():
 def test_is_directory_docs_1():
     assert is_directory(EXISTING_DIRECTORY_PATH)
     assert not is_directory(NON_EXISTENT_DIRECTORY_PATH)
-
-
-def test_temp_dir_create_docs_1():
-    temp_dir = temp_dir_create()
-    assert isinstance(temp_dir, tempfile.TemporaryDirectory)
-    temp_dir.cleanup()

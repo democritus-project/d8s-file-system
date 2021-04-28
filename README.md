@@ -133,10 +133,6 @@ We use `d8s` as an abbreviation for `democritus` (you can read more about this [
         """Return whether or not the file name contains the given pattern."""
     ```
   - ```python
-    def temp_file_create(**kwargs) -> IO[Any]:
-        """Create a temporary file."""
-    ```
-  - ```python
     def is_directory(path: str) -> bool:
         """Determine if the given path is a directory."""
     ```
@@ -223,10 +219,6 @@ We use `d8s` as an abbreviation for `democritus` (you can read more about this [
         directory_path: str, pattern: str, *, recursive: bool = False
     ) -> Iterable[Tuple[str, str]]:
         """Read all of the files in the given directory whose paths match the given pattern."""
-    ```
-  - ```python
-    def temp_dir_create(**kwargs):
-        """Create a temporary directory."""
     ```
   - ```python
     def atomic_write(fpath, *, overwrite: bool = True, **cls_kwargs):

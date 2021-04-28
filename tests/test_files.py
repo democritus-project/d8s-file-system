@@ -36,7 +36,6 @@ from d8s_file_system import (
     file_ssdeep,
     file_write,
     is_file,
-    temp_file_create,
 )
 
 NON_EXISTENT_FILE_PATH = './foo'
@@ -250,9 +249,3 @@ def test_file_ssdeep_docs_1():
 def test_is_file_docs_1():
     assert is_file(EXISTING_FILE_PATH)
     assert not is_file(NON_EXISTENT_FILE_PATH)
-
-
-def test_temp_file_create_docs_1():
-    temp_file = temp_file_create()
-    assert temp_file
-    temp_file.close()

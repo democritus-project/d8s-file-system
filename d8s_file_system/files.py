@@ -3,8 +3,7 @@ import ntpath
 import os
 import posixpath
 import shutil
-import tempfile
-from typing import IO, Any, Dict, List, Union
+from typing import Any, Dict, List, Union
 
 from .atomic_writes import atomic_write
 
@@ -89,7 +88,7 @@ def file_delete(file_path: str):
 
 def file_owner_name(file_path: str) -> str:
     """Find the owner of the file at the given path."""
-    from pwd import getpwuid
+    from pwd import getpwuid  # pylint: disable=C0415
 
     file_owner_uid = os.stat(file_path).st_uid
     owner_username = getpwuid(file_owner_uid).pw_name
@@ -140,7 +139,7 @@ def file_sha512(file_path: str) -> str:
 
 def file_name_escape(file_name_arg: str) -> str:
     """Escape the name of a file so that it can be used as a file name in a file path."""
-    import urllib.parse as urlparse
+    import urllib.parse as urlparse  # pylint: disable=C0415
 
     # TODO: I should probably make an 'unescape' file
 
@@ -214,7 +213,7 @@ def file_contains(file_path: str, pattern: str, *, pattern_is_regex: bool = Fals
 
 def file_search(file_path: str, pattern: str, *, pattern_is_regex: bool = False) -> List[str]:
     """Search for the given pattern in the file."""
-    import re
+    import re  # pylint: disable=C0415
 
     file_text = file_read(file_path)
     if pattern_is_regex:
@@ -227,8 +226,3 @@ def file_name_matches(file_path: str, pattern: str) -> bool:
     """Return whether or not the file name contains the given pattern."""
     name = file_name(file_path)
     return fnmatch.fnmatch(name, pattern)
-
-
-def temp_file_create(**kwargs) -> IO[Any]:
-    """Create a temporary file."""
-    return tempfile.TemporaryFile(**kwargs)
