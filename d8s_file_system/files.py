@@ -152,6 +152,10 @@ def file_name(file_path: str) -> str:
     return os.path.basename(file_path)
 
 
+def file_extension(file_path: str) -> str:
+    return os.path.splitext(file_path)[1]
+
+
 def file_name_windows(windows_file_path: str) -> str:
     """Find the file name from the given windows_file_path."""
     return ntpath.basename(windows_file_path)

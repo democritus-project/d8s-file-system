@@ -15,6 +15,7 @@ from d8s_file_system import (
     file_delete,
     file_details,
     file_exists,
+    file_extension,
     file_is_executable,
     file_is_readable,
     file_is_writable,
@@ -61,6 +62,15 @@ def setup_module():
 def teardown_module():
     """This function is run after all of the tests in this file are run."""
     directory_delete(TEST_DIRECTORY_PATH)
+
+
+def test_file_extension__docs_1():
+    assert file_extension('foo.py') == '.py'
+    assert file_extension('foo.bar.py') == '.py'
+    assert file_extension('test/foo/bar.py') == '.py'
+    # paths with a leading "." are ignored
+    assert file_extension('.py') == ''
+    assert file_extension('.test/foo.py') == '.py'
 
 
 def test_file_append_1():
