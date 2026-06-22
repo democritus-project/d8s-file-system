@@ -57,7 +57,7 @@ def directory_create(directory_path: str, mode=0o777):
     if not directory_exists(directory_path):
         os.makedirs(directory_path, mode=mode)
     else:
-        print(f'Output directory ({directory_path}) already exists')
+        print(f"Output directory ({directory_path}) already exists")
 
 
 # TODO: add return types for some of the functions below
