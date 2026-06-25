@@ -11,11 +11,11 @@ from .atomic_writes import atomic_write
 def _file_active_action(file_path: str, base_mode: str, file_contents: Any):
     """Perform an active action (write or append) with the given file contents on the given file."""
     if isinstance(file_contents, str):
-        length_of_content = _file_action(file_path, '{}+'.format(base_mode), 'write', file_contents)
+        length_of_content = _file_action(file_path, "{}+".format(base_mode), "write", file_contents)
     elif isinstance(file_contents, bytes):
-        length_of_content = _file_action(file_path, '{}b+'.format(base_mode), 'write', file_contents)
+        length_of_content = _file_action(file_path, "{}b+".format(base_mode), "write", file_contents)
     else:
-        print(f'Converting file contents of type {type(file_contents)} to string')
+        print(f"Converting file contents of type {type(file_contents)} to string")
         length_of_content = _file_active_action(file_path, base_mode, str(file_contents))
 
     if length_of_content >= 0:
@@ -27,16 +27,16 @@ def _file_active_action(file_path: str, base_mode: str, file_contents: Any):
     return result
 
 
-def _file_action(file_path, mode='r', command='read', contents=None):
-    if 'w' in mode:
+def _file_action(file_path, mode="r", command="read", contents=None):
+    if "w" in mode:
         with atomic_write(file_path, mode=mode) as f:  # pylint: disable=W0612  # noqa: F841
-            return eval(f'f.{command}(contents)')  # pylint: disable=W0123  # nosec
+            return eval(f"f.{command}(contents)")  # pylint: disable=W0123  # nosec
     else:
         with open(file_path, mode) as f:  # noqa: F841
             if contents:
-                return eval(f'f.{command}(contents)')  # pylint: disable=W0123  # nosec
+                return eval(f"f.{command}(contents)")  # pylint: disable=W0123  # nosec
             else:
-                return eval(f'f.{command}()')  # pylint: disable=W0123  # nosec
+                return eval(f"f.{command}()")  # pylint: disable=W0123  # nosec
 
 
 def is_file(path: str) -> bool:
@@ -46,25 +46,25 @@ def is_file(path: str) -> bool:
 
 def file_read(file_path: str) -> str:
     """Read the file at the given file_path as a string."""
-    file_text = _file_action(file_path, 'r', 'read')
+    file_text = _file_action(file_path, "r", "read")
     return file_text
 
 
 def file_read_bytes(file_path: str) -> bytes:
     """Read the file at the given file_path as bytes."""
-    file_text = _file_action(file_path, 'rb', 'read')
+    file_text = _file_action(file_path, "rb", "read")
     return file_text
 
 
 def file_write(file_path: str, file_contents: Any) -> bool:
     """Write the given content to the file at the given path (including a file name)."""
-    result = _file_active_action(file_path, 'w', file_contents)
+    result = _file_active_action(file_path, "w", file_contents)
     return result
 
 
 def file_append(file_path: str, file_contents: Any) -> bool:
     """Append the given content to the file at the given path (including a file name)."""
-    result = _file_active_action(file_path, 'a', file_contents)
+    result = _file_active_action(file_path, "a", file_contents)
     return result
 
 
@@ -99,7 +99,7 @@ def file_owner_name(file_path: str) -> str:
 # TODO: write a test for this function
 def file_change_owner(file_path: str):
     """Change the ownership of the given file."""
-    shutil.chown(file_path)
+    shutil.chown(file_path)  # type: ignore[call-overload]  # pre-existing: no user/group passed
 
 
 def file_ssdeep(file_path: str) -> str:
@@ -173,17 +173,17 @@ def file_size(file_path: str) -> int:
 
 def file_directory(file_path: str) -> str:
     """Return the directory in which the given file resides."""
-    return file_path.replace(file_name(file_path), '')
+    return file_path.replace(file_name(file_path), "")
 
 
 def file_details(file_path: str) -> Dict[str, Union[str, int]]:
     """Get file hashes and file size for the given file."""
     details = {
-        'md5': file_md5(file_path),
-        'sha1': file_sha1(file_path),
-        'sha256': file_sha256(file_path),
-        'ssdeep': file_ssdeep(file_path),
-        'size': file_size(file_path),
+        "md5": file_md5(file_path),
+        "sha1": file_sha1(file_path),
+        "sha256": file_sha256(file_path),
+        "ssdeep": file_ssdeep(file_path),
+        "size": file_size(file_path),
     }
     # (not sure why mypy fails here...)
     return details  # type: ignore

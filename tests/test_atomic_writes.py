@@ -4,15 +4,15 @@ import pytest
 
 from d8s_file_system import atomic_write, directory_create, directory_delete, file_read
 
-TEST_DIRECTORY_PATH = './test_files'
-NON_EXISTENT_FILE_PATH = './foo'
-TEST_FILE_NAME = 'a'
+TEST_DIRECTORY_PATH = "./test_files"
+NON_EXISTENT_FILE_PATH = "./foo"
+TEST_FILE_NAME = "a"
 EXISTING_FILE_PATH = os.path.join(TEST_DIRECTORY_PATH, TEST_FILE_NAME)
 
 
 def test_atomic_write_docs_1():
     directory_create(TEST_DIRECTORY_PATH)
-    FILE_CONTENTS = 'foo'
+    FILE_CONTENTS = "foo"
 
     with atomic_write(EXISTING_FILE_PATH) as f:
         f.write(FILE_CONTENTS)
