@@ -410,15 +410,15 @@ wheels = [
 
 [[package]]
 name = "d8s-lists"
-version = "0.8.0"
+version = "0.9.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "d8s-dicts" },
     { name = "more-itertools" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8d/1e/5303df0a4b55f3db49805e9a34c20eecb67ea7855ac348d17ee80d7816a9/d8s_lists-0.8.0.tar.gz", hash = "sha256:6a7709a9a64a64f77a85051d6887117ec216a2dd71d02477bcd0277e9fd4477e", size = 27395, upload-time = "2021-05-07T10:55:01.354Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/74/d0/cbd48be2be14a054b45355b247821c8adcde0f78517ca76489212a386288/d8s_lists-0.9.0.tar.gz", hash = "sha256:d5e8a732a273f16cfaf134e9a9e3696a019b4f1c87d59195bffc0a8091514e87", size = 93280, upload-time = "2026-07-01T10:43:54.068Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/aa/b2/9d2839b7da38b97afca11cd7192638b1c240f0e513b98de428420ab81357/d8s_lists-0.8.0-py2.py3-none-any.whl", hash = "sha256:93b7f6f402af580467a058d941673dcc3911084aa58cdc95f458f58ad8d81af4", size = 23251, upload-time = "2021-05-07T10:54:59.05Z" },
+    { url = "https://files.pythonhosted.org/packages/45/37/3cc5fb56d9603a573576e4d34033820910a18a07c7ba2aa98de024251f02/d8s_lists-0.9.0-py3-none-any.whl", hash = "sha256:a478f3820acb8ee575614e2e0ed0cec23cabfa3c02090d47edea7b5c2f0cc658", size = 20791, upload-time = "2026-07-01T10:43:52.957Z" },
 ]
 
 [[package]]
