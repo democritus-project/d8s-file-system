@@ -387,14 +387,14 @@ wheels = [
 
 [[package]]
 name = "d8s-hashes"
-version = "0.6.0"
+version = "0.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ppdeep" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/01/0c/5813281a83a0dd2476e5e1dde424ad487c20c42028a7f492ce7d5085bf73/d8s_hashes-0.6.0.tar.gz", hash = "sha256:dd95b6278f29f42042b315f51d14acb24962154ead759654d55c2dc6f6fa34ea", size = 23748, upload-time = "2021-05-07T10:53:35.068Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/2f/8a/acecdd2df022876a5e0cb5d0700ef18fd82ff3155f785fcf9d7d334a92d4/d8s_hashes-0.7.0.tar.gz", hash = "sha256:61e643d49c11f208d76517c4c5b5bd3512bcb058e6e0d89023db1bab5df24de8", size = 89951, upload-time = "2026-07-01T12:05:18.596Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/55/60/3e51939fb21c30a67b533f779eb71e47a20af3485fd6162e504e44c4599b/d8s_hashes-0.6.0-py2.py3-none-any.whl", hash = "sha256:92f5fe670de1bafc0b3d4afe1c52bc8f7dcbd1e381f670a02d7cebb03b7a0d1f", size = 20058, upload-time = "2021-05-07T10:53:33.138Z" },
+    { url = "https://files.pythonhosted.org/packages/8e/2c/69f6cc02ccf079e767083ffe4f255ae5053e1f0f39423757105d99845328/d8s_hashes-0.7.0-py3-none-any.whl", hash = "sha256:9125f2cffdaedc07cac3449dbb7afe274db49d51fa2b2050c24ef5a4c356f628", size = 18857, upload-time = "2026-07-01T12:05:17.224Z" },
 ]
 
 [[package]]
